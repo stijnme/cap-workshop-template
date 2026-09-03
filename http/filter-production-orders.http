@@ -1,0 +1,14 @@
+# GET /manufacturing/ProductionOrders?$filter=bookingId eq <id>
+#
+# See PLAN-MAN-TEST.md. Start the CAP project first: `npm run watch`.
+# No mocking: this hits the real running server, seed data from db/data/*.csv.
+
+@host = http://localhost:4005
+@base = {{host}}/manufacturing
+@seededId = 00000000-0000-0000-0000-000000000001
+@seededBookingId = 00000000-0000-0000-0000-000000000101
+
+### filter production orders by bookingId
+# expect: 200, value.length == 1, value[0].ID == {{seededId}}
+GET {{base}}/ProductionOrders?$filter=bookingId eq {{seededBookingId}}
+Accept: application/json

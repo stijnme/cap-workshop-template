@@ -1,0 +1,14 @@
+# GET /manufacturing/ProductionOrders
+#
+# See PLAN-MAN-TEST.md. Start the CAP project first: `npm run watch`.
+# No mocking: this hits the real running server, seed data from db/data/*.csv.
+
+@host = http://localhost:4005
+@base = {{host}}/manufacturing
+
+### list all production orders
+# expect: 200, value[] contains the seeded row with bookingId
+# 00000000-0000-0000-0000-000000000101, tireSpec "205/55R16",
+# garageId "garage-1", status "Open"
+GET {{base}}/ProductionOrders
+Accept: application/json
