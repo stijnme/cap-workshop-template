@@ -29,4 +29,21 @@ describe('ManufacturingService', () => {
     assert.equal(data.value.length, 1)
     assert.equal(data.value[0].ID, SEEDED_ID)
   })
+
+  it('creates a ProductionOrder from an inbound BookingCreated event', async () => {
+    const bookingId = '00000000-0000-0000-0000-000000000102'
+    const messaging = await cds.connect.to('messaging')
+
+    await messaging.emit('BookingCreated', {
+      bookingId,
+      tireSpec: '225/45R17',
+      garageId: 'garage-2',
+    })
+
+    const { data } = await GET(`/manufacturing/ProductionOrders?$filter=bookingId eq ${bookingId}`)
+    assert.equal(data.value.length, 1)
+    assert.equal(data.value[0].tireSpec, '225/45R17')
+    assert.equal(data.value[0].garageId, 'garage-2')
+    assert.equal(data.value[0].status, 'Open')
+  })
 })
