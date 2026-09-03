@@ -7,8 +7,8 @@
     "node": ">=22"
   },
   "scripts": {
-    "start": "cds serve",
-    "watch": "cds watch",
+    "start": "PORT=4005 cds serve",
+    "watch": "PORT=4005 cds watch",
     "lint": "oxlint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
