@@ -1,0 +1,27 @@
+# POST /manufacturing/ProductionOrders(<ID>)/ManufacturingService.finish
+#
+# See PLAN-MAN-TEST.md. Start the CAP project first: `npm run watch`.
+# No mocking: this hits the real running server, seed data from db/data/*.csv.
+#
+# Mutating requests: run top to bottom on a freshly started `npm run watch`
+# (sqlite is :memory:, so restarting resets the seeded fixture to status "Open").
+
+@host = http://localhost:4005
+@base = {{host}}/manufacturing
+@seededId = 00000000-0000-0000-0000-000000000001
+@unknownId = 00000000-0000-0000-0000-000000000999
+
+### finish an Open production order
+# expect: 200, status == "Finished"
+POST {{base}}/ProductionOrders({{seededId}})/ManufacturingService.finish
+Content-Type: application/json
+
+### finish an already Finished production order
+# expect: 409 (run only after the request above, on the same server run)
+POST {{base}}/ProductionOrders({{seededId}})/ManufacturingService.finish
+Content-Type: application/json
+
+### finish an unknown production order
+# expect: 404
+POST {{base}}/ProductionOrders({{unknownId}})/ManufacturingService.finish
+Content-Type: application/json

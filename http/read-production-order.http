@@ -1,0 +1,19 @@
+# GET /manufacturing/ProductionOrders(<ID>)
+#
+# See PLAN-MAN-TEST.md. Start the CAP project first: `npm run watch`.
+# No mocking: this hits the real running server, seed data from db/data/*.csv.
+
+@host = http://localhost:4005
+@base = {{host}}/manufacturing
+@seededId = 00000000-0000-0000-0000-000000000001
+@unknownId = 00000000-0000-0000-0000-000000000999
+
+### read one production order by key
+# expect: 200, bookingId == 00000000-0000-0000-0000-000000000101
+GET {{base}}/ProductionOrders({{seededId}})
+Accept: application/json
+
+### read an unknown production order
+# expect: 404
+GET {{base}}/ProductionOrders({{unknownId}})
+Accept: application/json
